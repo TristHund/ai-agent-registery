@@ -1,10 +1,10 @@
 # Start with Ubuntu 22.04 as base
 FROM ubuntu:22.04
 
-# Prevent interactive prompts during package installation
+# Prevent interactive prompts
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install essential packages in one layer
+# Install essential packages
 RUN apt-get update && apt-get install -y \
     curl \
     git \
@@ -31,8 +31,11 @@ RUN npm i -g @coral-xyz/anchor-cli@0.28.0
 WORKDIR /app
 COPY . .
 
-# Expose port for Solana validator
+# Create validator directory
+RUN mkdir -p test-ledger
+
+# Expose port
 EXPOSE 8899
 
-# Start the validator and deploy script
-CMD ["sh", "-c", "solana-test-validator --bind-address 0.0.0.0 --no-bpf-jit & sleep 5 && ./deploy.sh"]
+# Start validator with correct params
+CMD ["sh", "-c", "solana-test-validator --ledger ./test-ledger --bind-address 0.0.0.0 & sleep 5 && ./deploy.sh"]

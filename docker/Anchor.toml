@@ -1,0 +1,9 @@
+[provider]
+cluster = "localnet"
+wallet = "~/.config/solana/id.json"
+
+[programs.localnet]
+my_program = "FctTCXPHYieYhvM6Y9mGD61RzHJp3TnppG2wc63avzfp"  # This will be your program ID
+
+[scripts]
+test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
