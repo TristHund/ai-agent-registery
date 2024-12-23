@@ -66,7 +66,7 @@ export default function RegisterCard() {
     try {
       setIsLoading(true);
       const provider = getProvider();
-      const resp = await provider.connect();
+      const resp = await provider!.connect();
       const sender = resp.publicKey;
 
       // Create the agent PDA
@@ -142,7 +142,7 @@ export default function RegisterCard() {
         await connection.getLatestBlockhash()
       ).blockhash;
       const signature = await signAndSendTransaction(
-        provider,
+        provider!,
         transaction,
         connection
       );

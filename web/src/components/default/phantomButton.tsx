@@ -84,7 +84,7 @@ const PhantomWalletButton = () => {
           disabled={isConnecting}
           className="px-4 py-2 bg-white text-black rounded-lg hover:bg-slate-300 transition-colors disabled:bg-gray-400"
         >
-          {isConnecting ? "Connecting..." : "Connect Phantom Wallet"}
+          {isConnecting ? "Connecting..." : "Connect Wallet"}
         </button>
       )}
     </div>
