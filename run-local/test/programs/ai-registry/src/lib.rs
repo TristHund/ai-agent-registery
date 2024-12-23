@@ -2,7 +2,7 @@ use anchor_lang::prelude::*;
 
 // This is your program's public key and it will update
 // automatically when you build the project.
-declare_id!("9uoQaPXLNxT4LErRST7QwaHaRy7t7Pv41tM4opGxriZZ");
+declare_id!("4sGDKj9UN85ogKYay7STCtcSt6Gn7uj1fSDs5hZqVY64");
 
 #[program]
 pub mod ai_registry {
