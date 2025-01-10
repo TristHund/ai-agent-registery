@@ -1,8 +1,6 @@
 use anchor_lang::prelude::*;
 
-// This is your program's public key and it will update
-// automatically when you build the project.
-declare_id!("9uoQaPXLNxT4LErRST7QwaHaRy7t7Pv41tM4opGxriZZ");
+declare_id!("CzNs4Zgotww2y9dVb4SNjmEDnYpAVE6bDDYccwNvs4wu");
 
 #[program]
 pub mod ai_registry {
@@ -27,11 +25,6 @@ pub mod ai_registry {
 
         let agent = &mut ctx.accounts.agent;
         let clock = Clock::get()?;
-        
-        require!(
-            clock.unix_timestamp > 0,
-            ErrorCode::InvalidTimestamp
-        );
 
         agent.name = name;
         agent.description = description;
@@ -62,11 +55,6 @@ pub mod ai_registry {
     ) -> Result<()> {
         let agent = &mut ctx.accounts.agent;
         let clock = Clock::get()?;
-        
-        require!(
-            clock.unix_timestamp > agent.updated_at,
-            ErrorCode::InvalidTimestamp
-        );
 
         if let Some(name) = name {
             require!(name.len() <= 100, ErrorCode::NameTooLong);
@@ -108,11 +96,6 @@ pub mod ai_registry {
     pub fn update_status(ctx: Context<UpdateAgent>, new_status: AgentStatus) -> Result<()> {
         let agent = &mut ctx.accounts.agent;
         let clock = Clock::get()?;
-
-        require!(
-            clock.unix_timestamp > agent.updated_at,
-            ErrorCode::InvalidTimestamp
-        );
 
         agent.status = new_status;
         agent.updated_at = clock.unix_timestamp;
@@ -160,7 +143,7 @@ pub struct Agent {
     pub status: AgentStatus,
     pub created_at: i64,
     pub updated_at: i64,
-    pub reserved: [u8; 32], // Changed to 32 bytes which has Default impl
+    pub reserved: [u8; 32],
 }
 
 impl Default for Agent {
@@ -188,16 +171,17 @@ pub enum AgentStatus {
 
 impl Agent {
     pub const LEN: usize = 
-        4 + // String prefix for name
+        8 +   // discriminator
+        4 +   // String prefix for name
         100 + // name max length
-        4 + // String prefix for description
+        4 +   // String prefix for description
         500 + // description max length
-        32 + // agent_key
-        32 + // owner
-        1 + // status (enum)
-        8 + // created_at
-        8 + // updated_at
-        64; // reserved space
+        32 +  // agent_key
+        32 +  // owner
+        1 +   // status (enum)
+        8 +   // created_at
+        8 +   // updated_at
+        32;   // reserved space
 }
 
 #[error_code]
